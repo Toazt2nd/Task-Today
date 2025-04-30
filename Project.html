@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bread Gacha</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #fffbe6;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #f4a460;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e9967a;
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 24px;
+      color: #6b4c3b;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Bread Gacha</h1>
+  <p>Click the button to get a random bread!</p>
+  <button onclick="rollGacha()">Roll!</button>
+  <div class="result" id="resultArea"></div>
+
+  <script>
+    const breads = [
+      "Donut",
+      "Baguette",
+      "Pizza",
+      "Tortilla",
+      "Whole Wheat",
+      "Croissant",
+      "White Bread",
+      "Toast",
+      "Sandwich",
+      "Banana Bread"
+    ];
+
+    function rollGacha() {
+      const randomIndex = Math.floor(Math.random() * breads.length);
+      const result = breads[randomIndex];
+      document.getElementById("resultArea").textContent = "You got: " + result + "!";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 # Task-Today
-# 1. Make a simple html project
+# 1. Make a simple html project <Done>
 # 2. Make an update for the file project
 # 3. Make 1 new branch
 # 4. Update the branch

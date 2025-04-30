@@ -62,10 +62,52 @@
       cursor: pointer;
     }
 
+    .layout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        flex-wrap: wrap; /* ensures responsiveness */
+    }
+
+
     .result {
       margin-top: 30px;
       font-size: 22px;
       color: #6b4c3b;
+    }
+
+    .legend {
+    /* margin-top: 40px; */
+    text-align: left;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff8dc;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #deb887;
+    }
+
+    .legend ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    }
+
+    .legend li {
+    margin: 6px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    }
+
+    .color-box {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -73,12 +115,30 @@
 
   <h1>🎡 Bread Gacha</h1>
 
-  <div class="wheel-container">
-    <div class="center-arrow"></div>
-    <div class="wheel" id="wheel"></div>
+  <div class="layout">
+    <div class="legend">
+      <h3>Bread Types:</h3>
+      <ul>
+        <li><span class="color-box" style="background:#f4e04d"></span> Donut</li>
+        <li><span class="color-box" style="background:#f4a261"></span> Bagel</li>
+        <li><span class="color-box" style="background:#e76f51"></span> Croissant</li>
+        <li><span class="color-box" style="background:#a8dadc"></span> Sandwich</li>
+        <li><span class="color-box" style="background:#457b9d"></span> Whole Wheat</li>
+        <li><span class="color-box" style="background:#2a9d8f"></span> Pizza</li>
+        <li><span class="color-box" style="background:#e9c46a"></span> White Bread</li>
+        <li><span class="color-box" style="background:#ffafcc"></span> Toast</li>
+      </ul>
+      <p><strong>🎲 Each bread type has a 12.5% chance of being selected.</strong></p>
+    </div>
+
+    <div class="wheel-container">
+      <div class="center-arrow"></div>
+      <div class="wheel" id="wheel"></div>
+      <button onclick="spin()">Spin!</button>
+    </div>
   </div>
 
-  <button onclick="spin()">Spin!</button>
+
   <div class="result" id="result"></div>
 
   <script>
@@ -109,24 +169,28 @@
 
     let spinning = false;
     let currentRotation = 0; // Track the total rotation
-
+    
     function spin() {
         if (spinning) return;
         spinning = true;
         result.textContent = "";
 
-        const spins = 10; // Number of full spins
-        const chosenIndex = Math.floor(Math.random() * breads.length);
-        const sliceAngle = 360 / breads.length;
-        const targetAngle = 360 - (chosenIndex * sliceAngle) - (sliceAngle / 2);
+        const spins = 10; // Full spins
+        const randomExtraAngle = Math.floor(Math.random() * 360);
+        const totalRotation = (360 * spins) + randomExtraAngle;
+        currentRotation += totalRotation;
 
-        const extraRotation = 360 * spins + targetAngle;
-        currentRotation += extraRotation;
-
+        // Apply rotation
         wheel.style.transform = `rotate(${currentRotation}deg)`;
 
         setTimeout(() => {
-            result.textContent = `You got: ${breads[chosenIndex].name}!`;
+            // Normalize rotation within 0-360
+            const normalizedRotation = currentRotation % 360;
+            // Determine which slice the arrow points to (at top center, 0 degrees)
+            const angleFromTop = (360 - normalizedRotation + sliceAngle / 2) % 360;
+            const index = Math.floor(angleFromTop / sliceAngle);
+
+            result.textContent = `You got: ${breads[index].name}!`;
             spinning = false;
         }, 4000);
     }
